@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.paf_day24l.models.BankAccount;
 import sg.edu.nus.iss.paf_day24l.models.exceptions.AccountNotFoundException;
+import sg.edu.nus.iss.paf_day24l.models.exceptions.UnableToCreateAccountException;
 import sg.edu.nus.iss.paf_day24l.utils.Query;
 
 @Repository
@@ -58,6 +59,19 @@ public class BankAccountRepository {
         } else {
             return false;
         }
+    }
+
+
+    public Boolean createNewAccount(String accountName, Boolean isActive, float amount) {
+
+        try {
+            template.update(Query.SQL_CREATE_ACCOUNT, accountName, isActive, amount);
+            return true;
+
+        } catch (DataAccessException ex) {
+            throw new UnableToCreateAccountException("Unable to create new account");
+        }
+
     }
 
 }

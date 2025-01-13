@@ -46,7 +46,7 @@ public class BankAccountService {
 
 
     @Transactional
-    public void transfer(int transferedAcountId, int transfereeAccountId, float transferAmount) {
+    public boolean transfer(int transferedAcountId, int transfereeAccountId, float transferAmount) {
         
         // retrieve two accounts
         BankAccount fromAccount = getAccountById(transferedAcountId);
@@ -60,8 +60,22 @@ public class BankAccountService {
         Boolean isTransferrerBalanceSufficient = checkSufficientBalance(fromAccount, transferAmount);
 
         if (isAccountFromActive && isAccountToActive && isTransferrerBalanceSufficient) {
+            fromAccount.setBalance(fromAccount.getBalance() - transferAmount);
+            bankAccountRepository.setAccountBalance(fromAccount);
 
+            toAccount.setBalance(toAccount.getBalance() + transferAmount);
+            bankAccountRepository.setAccountBalance(toAccount);
+
+            return true;
         }
 
+        return false;
+
     }
+
+
+    public Boolean createNewAccount(String accountName, Boolean isActive, float amount) {
+        return bankAccountRepository.createNewAccount(accountName, isActive, amount);
+    }
+    
 }

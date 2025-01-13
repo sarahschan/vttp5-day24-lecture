@@ -13,6 +13,7 @@ import sg.edu.nus.iss.paf_day24l.models.exceptions.AccountInactiveException;
 import sg.edu.nus.iss.paf_day24l.models.exceptions.AccountNotFoundException;
 import sg.edu.nus.iss.paf_day24l.models.exceptions.ErrorMessage;
 import sg.edu.nus.iss.paf_day24l.models.exceptions.InsufficientBalanceException;
+import sg.edu.nus.iss.paf_day24l.models.exceptions.UnableToCreateAccountException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -64,6 +65,20 @@ public class GlobalExceptionHandler {
 
         ErrorMessage message = new ErrorMessage();
             message.setStatus(response.getStatus());
+            message.setMessage(ex.getMessage());
+            message.setTimeStamp(new Date());
+            message.setEndPoint(request.getRequestURI());
+
+        return new ResponseEntity<ErrorMessage>(message, HttpStatus.INTERNAL_SERVER_ERROR);
+        
+    }
+
+
+    @ExceptionHandler(UnableToCreateAccountException.class)
+    public ResponseEntity<ErrorMessage> handleUnableToCreateAccountException(Exception ex, HttpServletRequest request, HttpServletResponse response) {
+
+        ErrorMessage message = new ErrorMessage();
+            message.setStatus(500);
             message.setMessage(ex.getMessage());
             message.setTimeStamp(new Date());
             message.setEndPoint(request.getRequestURI());
