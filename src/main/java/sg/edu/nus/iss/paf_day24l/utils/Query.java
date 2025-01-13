@@ -48,31 +48,31 @@ public class Query {
         """;
 
 
-    public static final String SQL_CREATE_BOOKING = 
+    public static final String SQL_CREATE_BOOK = 
         """
-            insert into booking
-                (title, quantity)
+            insert into book
+                (title, quantity, is_active)
             values
-                (?, ?)    
+                (?, ?, ?)    
         """;
 
 
-    public static final String SQL_GET_ALL_BOOKINGS = 
+    public static final String SQL_GET_ALL_BOOKS = 
         """
-            select * from booking        
+            select * from book        
         """;
 
 
-    public static final String SQL_GET_BOOKING_BY_ID = 
+    public static final String SQL_GET_BOOK_BY_ID = 
         """
-            select * from booking     
+            select * from book     
                 where id = ?   
         """;
 
 
     public static final String SQL_UPDATE_BOOK_BY_ID = 
         """
-            update booking
+            update book
                 set title = ?, quantity = ?
                 where id = ?
         """;
@@ -80,8 +80,32 @@ public class Query {
     
     public static final String SQL_UPDATE_BOOK_STATUS_BY_ID = 
         """
-            update booking
+            update book
                 set is_active = ?
                 where id = ?
+        """;
+
+    
+    public static final String SQL_GET_ALL_RESERVATIONS =
+        """
+            select * from reservation        
+        """;
+
+
+    public static final String SQL_CREATE_RESERVATION = 
+        """
+            insert into reservation
+                (full_name, reservation_date)    
+            values
+                (?, ?)
+        """;
+
+
+    public static final String SQL_INSERT_RESERVATION_DETAIL = 
+        """
+            insert into reservationdetail
+                (book_id, reservation_id)
+            values
+                (?, ?)        
         """;
 }

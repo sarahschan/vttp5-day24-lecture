@@ -1,6 +1,5 @@
 package sg.edu.nus.iss.paf_day24l.repositories;
 
-import java.beans.BeanProperty;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -12,37 +11,36 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Repository;
 
-import sg.edu.nus.iss.paf_day24l.models.Booking;
+import sg.edu.nus.iss.paf_day24l.models.Book;
 import sg.edu.nus.iss.paf_day24l.utils.Query;
 
 @Repository
-public class BookingRepository {
+public class BookRepository {
     
     @Autowired
     JdbcTemplate template;
 
 
-    public Boolean insertBook(Booking booking) {
+    public Boolean insertBook(Book book) {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         PreparedStatementCreator psc = new PreparedStatementCreator() {
             @Override
             public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
-                PreparedStatement ps = con.prepareStatement(Query.SQL_CREATE_BOOKING, new String[] {"id"});
-                ps.setString(1, booking.getTitle());
-                ps.setInt(2, booking.getQuantity());
+                PreparedStatement ps = con.prepareStatement(Query.SQL_CREATE_BOOK, new String[] {"id"});
+                ps.setString(1, book.getTitle());
+                ps.setInt(2, book.getQuantity());
 
                 return ps;
             }
         };
 
-        int createdBookingId = template.update(psc, keyHolder);
+        int createdBookId = template.update(psc, keyHolder);
 
-        if (createdBookingId > 0) {
+        if (createdBookId > 0) {
             return true;
         }
 
@@ -50,23 +48,23 @@ public class BookingRepository {
     }
 
 
-    public List<Booking> getAllBookings() {
+    public List<Book> getAllBooks() {
         
-        List<Booking> bookings = template.query(Query.SQL_GET_ALL_BOOKINGS, BeanPropertyRowMapper.newInstance(Booking.class));
+        List<Book> bookings = template.query(Query.SQL_GET_ALL_BOOKS, BeanPropertyRowMapper.newInstance(Book.class));
         return bookings;
     }
 
 
-    public Booking getBookingById(int bookingId) {
+    public Book getBookById(int bookId) {
         
-        Booking foundBooking = template.queryForObject(Query.SQL_GET_BOOKING_BY_ID, BeanPropertyRowMapper.newInstance(Booking.class), bookingId);
+        Book foundBooking = template.queryForObject(Query.SQL_GET_BOOK_BY_ID, BeanPropertyRowMapper.newInstance(Book.class), bookId);
         return foundBooking;
     }
 
 
-    public Boolean updateBooking(Booking updatedBooking) {
+    public Boolean updateBook(Book updatedBook) {
         
-        int updateSuccessful = template.update(Query.SQL_UPDATE_BOOK_BY_ID, updatedBooking.getTitle(), updatedBooking.getQuantity(), updatedBooking.getId());
+        int updateSuccessful = template.update(Query.SQL_UPDATE_BOOK_BY_ID, updatedBook.getTitle(), updatedBook.getQuantity(), updatedBook.getId());
         
         if (updateSuccessful > 0) {
             return true;
@@ -76,8 +74,8 @@ public class BookingRepository {
     }
 
 
-    public Boolean updateBookStatus(Booking updatedBooking) {
-        int updateSuccessful = template.update(Query.SQL_UPDATE_BOOK_STATUS_BY_ID, updatedBooking.getIsActive(), updatedBooking.getId());
+    public Boolean updateBookStatus(Book updatedBook) {
+        int updateSuccessful = template.update(Query.SQL_UPDATE_BOOK_STATUS_BY_ID, updatedBook.getIsActive(), updatedBook.getId());
 
         if (updateSuccessful > 0) {
             return true;

@@ -1,6 +1,6 @@
 package sg.edu.nus.iss.paf_day24l.models;
 
-public class Booking {
+public class Book {
     
     private int id;
     private String title;
@@ -8,7 +8,7 @@ public class Booking {
     private Boolean isActive;
 
 
-    public Booking() {
+    public Book() {
     }
 
 
