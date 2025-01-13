@@ -47,4 +47,41 @@ public class Query {
                 where id = ?
         """;
 
+
+    public static final String SQL_CREATE_BOOKING = 
+        """
+            insert into booking
+                (title, quantity)
+            values
+                (?, ?)    
+        """;
+
+
+    public static final String SQL_GET_ALL_BOOKINGS = 
+        """
+            select * from booking        
+        """;
+
+
+    public static final String SQL_GET_BOOKING_BY_ID = 
+        """
+            select * from booking     
+                where id = ?   
+        """;
+
+
+    public static final String SQL_UPDATE_BOOK_BY_ID = 
+        """
+            update booking
+                set title = ?, quantity = ?
+                where id = ?
+        """;
+
+    
+    public static final String SQL_UPDATE_BOOK_STATUS_BY_ID = 
+        """
+            update booking
+                set is_active = ?
+                where id = ?
+        """;
 }

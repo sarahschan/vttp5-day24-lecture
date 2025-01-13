@@ -5,6 +5,7 @@ public class Booking {
     private int id;
     private String title;
     private int quantity;
+    private Boolean isActive;
 
 
     public Booking() {
@@ -29,4 +30,11 @@ public class Booking {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    public Boolean getIsActive() {
+        return isActive;
+    }
+    public void setIsActive(Boolean isActive) {
+        this.isActive = isActive;
+    }
+    
 }
