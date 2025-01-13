@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import sg.edu.nus.iss.paf_day24l.models.BankAccount;
+import sg.edu.nus.iss.paf_day24l.models.exceptions.AccountNotFoundException;
 import sg.edu.nus.iss.paf_day24l.utils.Query;
 
 @Repository
@@ -25,14 +26,38 @@ public class BankAccountRepository {
 
         // Method 2
         try {
-            
             BankAccount bankAccount = template.queryForObject(Query.SQL_SELECT_ACCOUNT_BY_ID, BeanPropertyRowMapper.newInstance(BankAccount.class), accountId);
             return true;
 
         } catch (DataAccessException error) {
-
-            return false;
+            throw new AccountNotFoundException("The account you are querying does not exist in the database");
         }
 
     }
+
+
+    public BankAccount getAccountById(int accountId) {
+
+        try {
+            
+            BankAccount foundAccount = template.queryForObject(Query.SQL_SELECT_ACCOUNT_BY_ID, BeanPropertyRowMapper.newInstance(BankAccount.class), accountId);
+            return foundAccount;
+
+        } catch (DataAccessException ex) {
+            throw new AccountNotFoundException(String.format("The account with id %d does not exist", accountId));
+
+        }
+    }
+
+
+    public Boolean setAccountBalance(BankAccount accountUpdatedValues) {
+        int accountUpdated = template.update(Query.SQL_SET_BALANCE_BY_ID, accountUpdatedValues.getBalance(), accountUpdatedValues.getId());
+
+        if (accountUpdated == 1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }

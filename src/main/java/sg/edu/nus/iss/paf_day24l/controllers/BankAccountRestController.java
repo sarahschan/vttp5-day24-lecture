@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import sg.edu.nus.iss.paf_day24l.models.BankAccount;
 import sg.edu.nus.iss.paf_day24l.services.BankAccountService;
 
 @RestController
@@ -22,6 +23,14 @@ public class BankAccountRestController {
         Boolean isAccountExists = bankAccountService.checkAccountExists(accountId);
         return ResponseEntity.ok().body(isAccountExists);
         
+    }
+
+
+    @GetMapping("/{account-id}")
+    public ResponseEntity<BankAccount> getAccountById(@PathVariable("account-id") int accountId){
+        
+        BankAccount bankAccount = bankAccountService.getAccountById(accountId);
+        return ResponseEntity.ok().body(bankAccount);
     }
     
 }
